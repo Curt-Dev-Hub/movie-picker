@@ -1,34 +1,44 @@
-import { apiKey } from './config.js';
+export async function fetchMovies({ genre, year, language, page = 1 }) {
+  const params = new URLSearchParams({ genre, year, language, page });
 
-export let movieArray;
+  const response = await fetch(`/api/movies?${params.toString()}`);
+  const data = await response.json();
 
-export async function getMovies() {
-    const url = 'https://moviesdatabase.p.rapidapi.com/titles/random?list=most_pop_movies&genre=Action&info=base_info';
-    const options = {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': apiKey,
-            'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
-        }
-    };
-
-    try {
-        const response = await fetch(url, ...[options]);
-        const data = await response.json();
-        return movieArray = data.results;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Failed to fetch movies ' + error.message);
+  if (!response.ok) {
+        throw new Error(data.status_message || "API Error");
     }
+    return data;
 }
 
+export async function getRandomMovies(genre, year, quantity, language) {  
+  const firstPage = await fetchMovies({ genre, year, language, page: 1});
 
-// function to populate movieArray 
+  if(!firstPage.results || firstPage.results.length === 0) {
+    throw new Error("No movies returned on random page.");
+  }
 
-export const populateMovieArray = async () => {
-    try {
-        movieArray = await getMovies();
-    } catch (error) {
-        console.log(error);
-    }
+  // Cap TMDb page response at 500 
+  const maxPage = Math.min(firstPage.total_pages, 500);
+  const randomPage = Math.floor(Math.random() * maxPage) + 1;
+
+  const randomPageData = await fetchMovies({
+    genre,
+    year,
+    language,
+    page: randomPage
+  });
+
+  if(!randomPageData.results || randomPageData.results.length === 0) {
+    throw new Error("No movies returned on random page");
+  }
+
+  // Randomise results and return quantity
+  // Fisher-Yates algo
+  const shuffled = [...randomPageData.results];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled.slice(0, quantity);
 }

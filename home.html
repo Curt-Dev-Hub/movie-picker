@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Movie Finder - Discover Your Next Favourite Film</title>
+    <link rel="stylesheet" href="./css/home-style.css">
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🎬 Discover Movies Instantly</div>
+            <h1>Find Your Next Favourite Movie in Seconds</h1>
+            <p>Stop endless scrolling. Get personalized random movie recommendations based on your favourite genres, languages, and years.</p>
+            <div class="cta-buttons">
+                <a href="#get-started" class="btn btn-primary" id="test-btn">Start Discovering</a>
+                <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <span class="section-badge">Why Choose Us</span>
+                <h2>Discover Movies Your Way</h2>
+                <p>Powerful filters and smart randomization help you find hidden gems and classics alike</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎭</div>
+                    <h3>Multi-Genre Selection</h3>
+                    <p>Choose up to 3 genres and discover films that blend your favourite styles perfectly.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Global Cinema</h3>
+                    <p>Explore movies from around the world with our extensive language filter options.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Time Travel</h3>
+                    <p>Filter by specific years from 1960 to 2025 and discover cinema across decades.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎲</div>
+                    <h3>Smart Randomization</h3>
+                    <p>Get truly random picks that match your criteria - no algorithm bubbles, just discovery.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Results</h3>
+                    <p>Get up to 10 movie suggestions instantly with detailed information and ratings.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Beautiful, responsive design that works perfectly on any device, anywhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="steps-container">
+            <div class="section-header">
+                <span class="section-badge">Simple Process</span>
+                <h2>How It Works</h2>
+                <p>Three simple steps to discover your next movie night pick</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Choose Your Preferences</h3>
+                        <p>Select your favourite genres, preferred language, how many films you want, and optionally filter by release year to narrow down your search.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Get Random Recommendations</h3>
+                        <p>Our smart algorithm instantly generates random movie suggestions that perfectly match your criteria from our extensive database.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Discover & Watch</h3>
+                        <p>Browse through your personalized recommendations with ratings, descriptions, and details. Find something new or rediscover a classic!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="get-started">
+        <div class="cta-content">
+            <h2>Ready to Discover Amazing Movies?</h2>
+            <p>Stop wasting time deciding. Start discovering movies you'll love in seconds.</p>
+            <a href="/moviepicker" class="btn btn-primary">Get Started Free</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
+                <a href="/privacy">Privacy Policy</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Random Movie Finder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Add smooth scrolling to all links
+            $("a").on('click', function (event) {
+
+                // Make sure this.hash has a value before overriding default behavior
+                if (this.hash !== "") {
+                    // Prevent default anchor click behavior
+                    event.preventDefault();
+
+                    // Store hash
+                    var hash = this.hash;
+
+                    // Using jQuery's animate() method to add smooth page scroll
+                    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 900, function () {
+
+                        // Add hash (#) to URL when done scrolling (default click behavior)
+                        window.location.hash = hash;
+                    });
+                } // End if
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,171 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://unpkg.com/normalize.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,800&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,800&display=swap"
+        rel="stylesheet">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Online random movie picker">
-    <meta name="keyword" content="Random movies, Film Choice, Films, Movies">
+    <meta name="description" content="Can't decide what movie to watch? Try this simple Online movie picker">
+    <meta name="keyword" content="Random movies, Film Choice, Films, Movies, Movie Picker">
     <title>Random Movie Picker</title>
     <link rel="stylesheet" href="./css/moviePicker.css">
-    <script type="module" src="./javascript/moviePicker.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.min.js" integrity="sha512-sLPKCwYDz/KpwnqqJagXuuxusKOMDk3NifonwkLItJyc2vBKfqSd1pWtRfolbfJmf4hXYZ0sk0AlQyjB0PEXGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
 </head>
+
 <body>
+    <div id="feedback-overlay" class="overlay hidden"></div>
+
+    <!-- custom winner modal -->
+    <div id="winner-modal" class="hidden">
+        <div class="winner-modal-backdrop">
+            <div class="winner-modal-content">
+                <h2>🎉 Winner!</h2>
+                <p id="winner-title"></p>
+                <img src="/pictures/MJ_Popcorn.gif" alt="Michael Jackson Eating popcorn in the cinema">
+                <button id="winner-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <form id="feedback-form" action="../email-form-handler.php" method="post">
+        <div id="close-feedback">❌</div>
+        <h3 id="feedback-form-heading">What did you think? What would you like to see added? Share your thoughts below</h3>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br>
+        
+        <label for="user-feedback-text">Feedback:</label>
+        <textarea id="user-feedback-text" name="user-feedback-text" rows="7" cols="50"></textarea><br><br>
+        
+        <input id="feedback-submit" type="submit" value="Submit">
+    </form>
+    
+    <div id="feedback">Give Feedback</div>
+    
     <div class="main-wrapper">
+        <!-- dynamic loading spinner -->
+        <div id="loading-spinner" class="spinner hidden"></div>
         <h1>RANDOM MOVIE PICKER</h1>
-        <h2>Not Sure What To Watch: <br>YOU are in the right place! 📽️</h2>
+        <h2>Not Sure What To Watch? YOU are in the right place! 📽️</h2>
     <!-- testing main wrapper -->
         <section class="user-choice-wrapper">
-            <h4>Let fate take the wheel.. have a spin</h4>
+            <h3>Use The Form Below To Get Random Movie Ideas</h3>  <!-- should be an h3 *Google Lighthouse*-->
             <div class="form-wrapper">
-                <form id="user-movie-form">
-                    <label for="genre">Choose a genre:</label> <br><br>
-                    <select name="genre" id="genre">
-                        <option value="Select Genre">Select Genre</option>
-                        <option value="Action">Action</option>
-                        <option value="Comedy">Comedy</option>
-                        <option value="Drama">Drama</option>
-                        <option value="Horror">Horror</option>
-                        <option value="Adventure">Adventure</option>
-                        <option value="Adventure">Adventure</option>
-                        <option value="Animation">Animation</option>
-                        <option value="Biography">Biography</option>
-                        <option value="Comedy">Comedy</option>
-                        <option value="Crime">Crime</option>
-                        <option value="Documentary">Documentary</option>
-                        <option value="Family">Family</option>
-                        <option value="Fantasy">Fantasy</option>
-                        <option value="Film-Noir">Film-Noir</option>
-                        <option value="Musical">Musical</option>
-                        <option value="Mystery">Mystery</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Sci-Fi">Sci-Fi</option>
-                        <option value="Sport">Sport</option>
-                        <option value="Thriller">Thriller</option>
-                        <option value="War">War</option>
-                        <option value="Western">Western</option>
-                    </select> <br><br>
+                <form id="user-movie-form" class="movie-form">
+                    <div class="form-group">
+                        <!-- <label for="genre">Choose Your Genre</label>
+                        <select name="genre" id="genre" required>
+                            <option value="Select Genre" disabled selected>Select Genre</option>
+                            <option value="Select Genre">Select Genre</option>
+                            <option value="28">Action</option>
+                            <option value="12">Adventure</option>
+                            <option value="16">Animation</option>
+                            <option value="35">Comedy</option>
+                            <option value="80">Crime</option>
+                            <option value="99">Documentary</option>
+                            <option value="18">Drama</option>
+                            <option value="10751">Family</option>
+                            <option value="14">Fantasy</option>
+                            <option value="36">History</option>
+                            <option value="27">Horror</option>
+                            <option value="10402">Music</option>
+                            <option value="9648">Mystery</option>
+                            <option value="10749">Romance</option>
+                            <option value="878">Science-Fiction</option>
+                            <option value="10770">TV Movie</option>
+                            <option value="53">Thriller</option>
+                            <option value="10752">War</option>
+                            <option value="37">Western</option>
+                        </select> -->
+                        <label for="genre1">Choose Your Genre(s)</label>
+                        <div id="genre-selectors">
+                            <!-- <select id="genre1" name="genre1" required>
+                                <option value="" disabled selected>Select first genre</option> -->
+                                <!-- filled dynamically                             </select> -->
+                    <!-- Genre 2 + Genre 3 will be injected here -->
+                        </div>
+                    </div>    
+                    <div class="form-group">
+                        <label for="quantity">Choose How Many Random films</label>
+                        <select name="quantity" id="quantity" required>
+                            <option value="Select Number" disabled selected>Select Number</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                     
 
-                    <label for="quantity">How many random films:</label> <br><br>
-                    <select name="quantity" id="quantity">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select> <br><br>
-
-                    <label for="year">Choose a release year:</label> <br><br>
-                    <select>
-                        <option value="1940">1940</option>
-                        <option value="1941">1941</option>
-                        <option value="1942">1942</option>
-                        <option value="1943">1943</option>
-                        <option value="1944">1944</option>
-                        <option value="1945">1945</option>
-                        <option value="1946">1946</option>
-                        <option value="1947">1947</option>
-                        <option value="1948">1948</option>
-                        <option value="1949">1949</option>
-                        <option value="1950">1950</option>
-                        <option value="1951">1951</option>
-                        <option value="1952">1952</option>
-                        <option value="1953">1953</option>
-                        <option value="1954">1954</option>
-                        <option value="1955">1955</option>
-                        <option value="1956">1956</option>
-                        <option value="1957">1957</option>
-                        <option value="1958">1958</option>
-                        <option value="1959">1959</option>
-                        <option value="1960">1960</option>
-                        <option value="1961">1961</option>
-                        <option value="1962">1962</option>
-                        <option value="1963">1963</option>
-                        <option value="1964">1964</option>
-                        <option value="1965">1965</option>
-                        <option value="1966">1966</option>
-                        <option value="1967">1967</option>
-                        <option value="1968">1968</option>
-                        <option value="1969">1969</option>
-                        <option value="1970">1970</option>
-                        <option value="1971">1971</option>
-                        <option value="1972">1972</option>
-                        <option value="1973">1973</option>
-                        <option value="1974">1974</option>
-                        <option value="1975">1975</option>
-                        <option value="1976">1976</option>
-                        <option value="1977">1977</option>
-                        <option value="1978">1978</option>
-                        <option value="1979">1979</option>
-                        <option value="1980">1980</option>
-                        <option value="1981">1981</option>
-                        <option value="1982">1982</option>
-                        <option value="1983">1983</option>
-                        <option value="1984">1984</option>
-                        <option value="1985">1985</option>
-                        <option value="1986">1986</option>
-                        <option value="1987">1987</option>
-                        <option value="1989">1989</option>
-                        <option value="1990">1990</option>
-                        <option value="1991">1991</option>
-                        <option value="1992">1992</option>
-                        <option value="1993">1993</option>
-                        <option value="1994">1994</option>
-                        <option value="1995">1995</option>
-                        <option value="1996">1996</option>
-                        <option value="1997">1997</option>
-                        <option value="1998">1998</option>
-                        <option value="1999">1999</option>
-                        <option value="2000">2000</option>
-                        <option value="2001">2001</option>
-                        <option value="2002">2002</option>
-                        <option value="2003">2003</option>
-                        <option value="2004">2004</option>
-                        <option value="2005">2005</option>
-                        <option value="2006">2006</option>
-                        <option value="2007">2007</option>
-                        <option value="2008">2008</option>
-                        <option value="2009">2009</option>
-                        <option value="2010">2010</option>
-                        <option value="2011">2011</option>
-                        <option value="2012">2012</option>
-                        <option value="2013">2013</option>
-                        <option value="2014">2014</option>
-                        <option value="2015">2015</option>
-                        <option value="2016">2016</option>
-                        <option value="2017">2017</option>
-                        <option value="2018">2018</option>
-                        <option value="2019">2019</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                    </select> <br><br>
+                    <!-- <label for="year_range">Select A Year Range</label> <br><br>
+                    <select name="year_range" id="year_range" required>
+                        <option value="Select Year Range" selected>Select Year Range</option>
+                        <option data-start-year="1960" data-end-year="1965">1960-1965</option>
+                        <option data-start-year="1965" data-end-year="1970">1965-1970</option>
+                        <option data-start-year="1970" data-end-year="1975">1970-1975</option>
+                        <option data-start-year="1975" data-end-year="1980">1975-1980</option>
+                        <option data-start-year="1980" data-end-year="1985">1980-1985</option>
+                        <option data-start-year="1985" data-end-year="1990">1985-1990</option>
+                        <option data-start-year="1990" data-end-year="1995">1990-1995</option>
+                        <option data-start-year="1995" data-end-year="2000">1995-2000</option>
+                        <option data-start-year="2000" data-end-year="2005">2000-2005</option>
+                        <option data-start-year="2005" data-end-year="2010">2005-2010</option>
+                        <option data-start-year="2010" data-end-year="2015">2010-2015</option>
+                        <option data-start-year="2015" data-end-year="2020">2015-2020</option>
+                        <option data-start-year="2020" data-end-year="2022">2020-2022</option>
+                    </select> <br><br> -->
+                    <div class="form-group">
+                        <label for="language">Select Film Language</label>
+                        <select name="language" id="language">
+                            <option value="">Select Language</option>
+                        </select>
+                    </div>
                     
-
-                
-                    <label for="language">Choose a language:</label> <br><br>
-                    <select name="language" id="language">
-                    <option value="english">English</option>
-                    <option value="french">French</option>
-                    <option value="spanish">Spanish</option>
-                    <option value="german">German</option>
-                    <!-- more options... -->
-                    </select> <br><br>
-                
-                    <input type="submit" value="Submit">
+                    <div class="form-group">
+                        <label for="selected-year">Filter For A Specific Release Year - (Optional)</label>
+                        <select name="selected-year" id="selected-year" required>
+                            <option value="Select A Year" selected disabled>Select A Year</option>
+                            <option value="1960">1960</option>
+                            <option value="1961">1961</option>
+                            <option value="1962">1962</option>
+                            <option value="1963">1963</option>
+                            <option value="1964">1964</option>
+                            <option value="1965">1965</option>
+                            <option value="1966">1966</option>
+                            <option value="1967">1967</option>
+                            <option value="1968">1968</option>
+                            <option value="1969">1969</option>
+                            <option value="1970">1970</option>
+                            <option value="1971">1971</option>
+                            <option value="1972">1972</option>
+                            <option value="1973">1973</option>
+                            <option value="1974">1974</option>
+                            <option value="1975">1975</option>
+                            <option value="1976">1976</option>
+                            <option value="1977">1977</option>
+                            <option value="1978">1978</option>
+                            <option value="1979">1979</option>
+                            <option value="1980">1980</option>
+                            <option value="1981">1981</option>
+                            <option value="1982">1982</option>
+                            <option value="1983">1983</option>
+                            <option value="1984">1984</option>
+                            <option value="1985">1985</option>
+                            <option value="1986">1986</option>
+                            <option value="1987">1987</option>
+                            <option value="1989">1989</option>
+                            <option value="1990">1990</option>
+                            <option value="1991">1991</option>
+                            <option value="1992">1992</option>
+                            <option value="1993">1993</option>
+                            <option value="1994">1994</option>
+                            <option value="1995">1995</option>
+                            <option value="1996">1996</option>
+                            <option value="1997">1997</option>
+                            <option value="1998">1998</option>
+                            <option value="1999">1999</option>
+                            <option value="2000">2000</option>
+                            <option value="2001">2001</option>
+                            <option value="2002">2002</option>
+                            <option value="2003">2003</option>
+                            <option value="2004">2004</option>
+                            <option value="2005">2005</option>
+                            <option value="2006">2006</option>
+                            <option value="2007">2007</option>
+                            <option value="2008">2008</option>
+                            <option value="2009">2009</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                            <option value="2013">2013</option>
+                            <option value="2014">2014</option>
+                            <option value="2015">2015</option>
+                            <option value="2016">2016</option>
+                            <option value="2017">2017</option>
+                            <option value="2018">2018</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>                        
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+                    <div class="form-submit">
+                        <input id="form-submit" type="submit" value="Submit Choices">
+                    </div>
                 </form>
             </div>
         </section>
-        <div class="random-movie-set">
+        <div class="loadMoreContainer">
+            <button type="button" class="loadMoreBtn hidden">Load More Movies</button>
+        </div>
+        <!-- scroll to top -->
+        <button id="scrollTopBtn" class="scroll-top hidden">↑ Top</button>
+        
+        <!-- movie shortlist container  -->
+        <section id="shortlist-section">
+            <h3>Your Shortlist</h3>
+        
+            <div id="shortlist-container" class="shortlist-grid">
+                <!-- renderShortlist() will populate -->
+            </div>
+        
+            <button id="spin-wheel-btn" class="spin-btn hidden">Pick a Random Movie 🎡</button>
+        </section>
+
+        <div class="random-movie-set">    
             <!-- <div class="single-film-wrapper">
                 <div class="single-film-inner-wrapper">
                     <img src="./pictures/testing-image.jpg" alt="" class="movie-pic-small">
@@ -183,6 +247,70 @@
                 </div>
             </div> -->
         </div>
-    </div>    
+        <div class="loadMoreContainer">
+            <button type="button" class="loadMoreBtn hidden">Load More Movies</button>
+        </div>
+    </div>
+    <!-- SPINNING WHEEL MODAL -->
+    <div id="wheel-modal" class="wheel-modal hidden">
+        <div id="wheel-pointer">▲</div>
+        <div id="winner-pulse"></div>
+        <div class="wheel-content">
+            <canvas id="wheel-canvas" width="500" height="500"></canvas>
+            <canvas id="confetti-canvas"></canvas>
+            <button id="spin-btn" class="spin-btn">Spin 🎰</button>
+            <button id="close-wheel" class="close-wheel">Close</button>
+        </div>
+    </div>
+    <!-- MOVIE MODAL - IF LONG DESCRIPTION -->
+    <div id="movieModal" class="movie-modal hidden">
+        <div class="movie-modal-content">
+            <span id="movieModalClose" class="close-btn">✕</span>
+
+            <div class="movie-modal-body">
+                <img id="modalPoster" src="" alt="Movie Poster">
+                <h2 id="modalTitle"></h2>
+                <p id="modalYear"></p>
+                <p id="modalRating"></p>
+                <p id="modalOverview"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movie Info / Providers Modal -->
+    <div id="movie-info-modal" class="hidden">
+        <div class="movie-info-backdrop" id="movie-info-backdrop">
+            <div class="movie-info-card" role="dialog" aria-modal="true" aria-labelledby="movie-info-title">
+                <button id="movie-info-close" class="movie-info-close" aria-label="Close">✕</button>
+
+                <div class="movie-info-inner">
+                    <div class="movie-info-header">
+                        <h3 id="movie-info-title">Title</h3>
+                        <a id="movie-tmdb-link" href="#" target="_blank" rel="noopener noreferrer">View on TMDb ↗</a>
+                        <div id="justwatch-attr">
+                            <h4>TV Listing Information Provided By:</h4>
+                            <img id="justwatch-logo" src="./pictures/justwatch-logo.svg" alt="Justwatch Logo - Global TV Listing Provider">
+                        </div>
+                    </div>
+
+                    <div id="movie-info-loading" class="movie-info-loading">Loading…</div>
+
+                    <div id="movie-info-body" class="movie-info-body hidden">
+                        <div id="provider-container"></div>
+                        <div id="movie-info-fallback" class="movie-info-fallback hidden">
+                            <p>This movie is not currently available to stream, rent, or buy in the UK.</p>
+                        </div>
+                    </div>
+
+                    <div class="movie-info-actions">
+                        <a id="movie-tmdb-link-cta" class="movie-info-btn" href="#" target="_blank"
+                            rel="noopener noreferrer">Open on TMDb</a>
+                        <button id="movie-info-close-cta" class="movie-info-btn alt">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./javascript/moviePicker.js"></script>
 </body>
 </html>

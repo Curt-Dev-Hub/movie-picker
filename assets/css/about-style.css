@@ -1,0 +1,360 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #263238;
+    background: linear-gradient(to bottom, #f8fbfd 0%, #e8f4f8 100%);
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #1976D2 0%, #00BCD4 100%);
+    padding: 1.5rem 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+}
+
+.nav-links a:hover {
+    opacity: 0.8;
+}
+
+/* Main Content */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 1rem;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.page-badge {
+    display: inline-block;
+    background: #E0F7FA;
+    color: #00838F;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.page-header h1 {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    color: #263238;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.page-header p {
+    font-size: 1.25rem;
+    color: #546E7A;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Content Cards */
+.content-section {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.content-section h2 {
+    font-size: 2rem;
+    color: #263238;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #2196F3 0%, #00BCD4 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.content-section p {
+    color: #546E7A;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 1.25rem;
+}
+
+.content-section ul {
+    list-style: none;
+    margin: 1.5rem 0;
+}
+
+.content-section li {
+    color: #546E7A;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.content-section li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #00BCD4;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+/* Attribution Section */
+.attribution-section {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    border: 2px solid #E0F7FA;
+}
+
+.attribution-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.attribution-header h2 {
+    font-size: 2rem;
+    color: #263238;
+    margin-bottom: 1rem;
+}
+
+.tmdb-logo-container {
+    background: #f8fbfd;
+    padding: 2.5rem;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 2rem;
+    border: 2px dashed #B2EBF2;
+}
+
+.tmdb-logo-placeholder {
+    width: 200px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    /* background: #E0F7FA; */
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* font-size: 0.875rem; */
+    /* color: #00838F; */
+    /* font-weight: 600; */
+    /* border: 2px solid #00BCD4; */
+}
+
+.attribution-notice {
+    background: #FFF9C4;
+    border-left: 4px solid #FBC02D;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.attribution-notice p {
+    color: #F57F17;
+    font-weight: 600;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.attribution-text {
+    text-align: center;
+    color: #546E7A;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.tmdb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #2196F3;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#tmdb-logo {
+    width: 100%;
+    height: 100%;
+}
+
+.tmdb-link:hover {
+    color: #00BCD4;
+    transform: translateX(3px);
+}
+
+/* Team Section */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.team-member {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: #f8fbfd;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #2196F3 0%, #00BCD4 100%);
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.team-member h3 {
+    font-size: 1.25rem;
+    color: #263238;
+    margin-bottom: 0.5rem;
+}
+
+.team-member p {
+    color: #00838F;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Footer */
+footer {
+    background: #263238;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 3rem 1rem 2rem;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+    color: #00BCD4;
+}
+
+.footer-bottom {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 1rem;
+    }
+
+    .content-section {
+        padding: 2rem 1.5rem;
+    }
+
+    .attribution-section {
+        padding: 2rem 1.5rem;
+    }
+
+    .tmdb-logo-container {
+        padding: 1.5rem;
+    }
+
+    .tmdb-logo-placeholder {
+        width: 150px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
