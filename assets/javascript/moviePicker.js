@@ -307,7 +307,26 @@ document.getElementById('movie-info-backdrop').addEventListener('click', (e) => 
 
 // ==========================================================================================
 
+// function to check width
+function checkWidthAndApplyClass() {
+    const screenwidth = window.innerWidth = window.innerWidth;
+    const parentElement = document.querySelector('#provider-container');
 
+    if(parentElement) {
+        const fourthChild = parentElement.children[3];
+
+        if(fourthChild) {
+            if(screenwidth <= 650) {
+                fourthChild.classList.add('provider-group');
+            } else {
+                fourthChild.classList.remove('provider-group');
+            }
+        }
+    }
+}
+
+checkWidthAndApplyClass();
+window.addEventListener('resize', checkWidthAndApplyClass);
 
 
 

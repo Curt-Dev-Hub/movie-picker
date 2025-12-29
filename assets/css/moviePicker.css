@@ -903,10 +903,32 @@ input[type=text], input[type=email], textarea {
     }
     .movie-form {
         gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr)); /* testing - 29/12/2025 */
     }
 
     #form-submit {
         width: 100%;
+    }
+    /* testing - 29/12/2025 */
+    .form-wrapper {
+        padding: 2px;
+    }
+    #feedback {
+        z-index: 2;
+        top: 60%;
+    }
+    #movie-info-modal {
+        width: 99vw;
+        height: 100vh;
+        height: 100dvh;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        overflow-y: scroll;
+    }
+    .movie-info-backdrop {
+        height: 100vh;
+        height: 100dvh;
     }
 }
 
