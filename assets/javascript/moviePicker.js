@@ -219,9 +219,11 @@ async function openMovieInfoModal(movieId) {
   const providerContainer = document.getElementById('provider-container');
   const fallbackEl = document.getElementById('movie-info-fallback');
 
-  // Get movie metadata from your cache (you already populate movieCache in renderMovies)
-  const movie = (window.movieCache && movieCache[movieId]) ? movieCache[movieId] : null;
+  // Get movie metadata from movieCache (populated in renderMovies)
+  const movie = (movieCache && movieCache[movieId]) ? movieCache[movieId] : null;
+//   console.log(movie);
   const title = movie ? (movie.title || movie.original_title || 'Movie') : 'Movie';
+
 
   // Set title and TMDb link immediately
   titleEl.textContent = title;

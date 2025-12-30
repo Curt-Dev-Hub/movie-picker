@@ -811,7 +811,7 @@ input[type=text], input[type=email], textarea {
 .movie-info-inner { padding: 20px 22px; }
 .movie-info-close { position: absolute; right: 12px; top: 12px; background: transparent; border: none; font-size: 20px; cursor: pointer; color: #102E4A; }
 .movie-info-header { display:flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;}
-#movie-info-title { margin: 0; font-size: 1.25rem; color: #08304d; }
+#movie-info-title { margin: 0; font-size: 1.25rem; color: #08304d; text-decoration: underline;}
 /* #movie-tmdb-link, #movie-tmdb-link-cta { color: #006eab; font-weight: 600; text-decoration: none; font-size: 0.95rem; } */
 #movie-tmdb-link, #movie-tmdb-link-cta { font-weight: 600; text-decoration: none; font-size: 0.95rem; padding-top: 18px;}
 .movie-info-loading { padding: 22px; color: #396b8a; text-align: center; }
@@ -930,10 +930,15 @@ input[type=text], input[type=email], textarea {
         height: 100vh;
         height: 100dvh;
     }
+    
 }
 
-@media screen and (min-width: 760px) {
-    
+@media screen and (max-width: 860px) {
+    .movie-info-inner {
+        height: 95vh;
+        height: 95dvh;
+        overflow-y: scroll;
+    }
 }
 
 @media screen and (min-width: 1080px) {
