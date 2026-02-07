@@ -26,10 +26,10 @@
     <div id="winner-modal" class="hidden">
         <div class="winner-modal-backdrop">
             <div class="winner-modal-content">
-                <h2>🎉 Winner!</h2>
+                <h2>🎉 Tonight's Movie:</h2>
                 <p id="winner-title"></p>
                 <img src="/pictures/MJ_Popcorn.gif" alt="Michael Jackson Eating popcorn in the cinema">
-                <button id="winner-close">Close</button>
+                <button type="button" id="winner-close">Awesome!</button>
             </div>
         </div>
     </div>
@@ -253,13 +253,15 @@
     </div>
     <!-- SPINNING WHEEL MODAL -->
     <div id="wheel-modal" class="wheel-modal hidden">
-        <div id="wheel-pointer">▲</div>
-        <div id="winner-pulse"></div>
         <div class="wheel-content">
+        <div id="wheel-pointer">▼</div>
+        <div id="winner-pulse"></div>
             <canvas id="wheel-canvas" width="500" height="500"></canvas>
             <canvas id="confetti-canvas"></canvas>
-            <button id="spin-btn" class="spin-btn">Spin 🎰</button>
-            <button id="close-wheel" class="close-wheel">Close</button>
+            <div>
+                <button type="button" id="spin-btn" class="spin-btn">Spin 🎰</button>
+                <button type="button" id="close-wheel" class="close-wheel">Close</button>
+            </div>
         </div>
     </div>
     <!-- MOVIE MODAL - IF LONG DESCRIPTION -->

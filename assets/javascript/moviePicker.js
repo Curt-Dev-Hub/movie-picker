@@ -824,6 +824,12 @@ function drawWheel() {
         wheelCtx.fill();
 
 
+        // SEGMENT BORDER
+        wheelCtx.strokeStyle = "#000000";  // ← CHANGE BORDER COLOR HERE
+        wheelCtx.lineWidth = 2;            // ← CHANGE BORDER THICKNESS HERE
+        wheelCtx.stroke();
+        wheelCtx.restore();
+
         //Draw poster image in spin wheel - not correctly sizing atm
         // if(movie.posterPath) {
         //     const img = new Image();
@@ -843,7 +849,10 @@ function drawWheel() {
         wheelCtx.rotate(start + arcSize / 2);
         wheelCtx.textAlign = "right";
         wheelCtx.fillStyle = "#fff";
-        wheelCtx.font = "14px sans-serif";
+        // wheelCtx.font = "14px sans-serif";
+        wheelCtx.font = `bold 16px Georgia`;
+        wheelCtx.shadowColor = "rgba(0,0,0,0.8)";
+        wheelCtx.shadowBlur = 5;
 
         // Wrap long titles
         const maxChars = 15;
@@ -851,34 +860,74 @@ function drawWheel() {
         wheelCtx.fillText(title, canvasSize/2 - 10, 5);
         wheelCtx.restore();
     });
-
-
-    // wheelAngles = shortlist;  <-- not needed as shortlist is now read directly below
 }
 
 function finishSpin(angle) {
+    // const shortlist = JSON.parse(sessionStorage.getItem("shortlist")) || [];
+    // const sliceAngle = (2 * Math.PI) / shortlist.length;
+
+    // let normalized = (2 * Math.PI - (angle % (2 * Math.PI))) % (2 * Math.PI);
+    // let index = Math.floor(normalized / sliceAngle);
+
+    // const winner = shortlist[index];
+
+    // highlightWinnerSlice(index, shortlist);
+    // triggerPulse();
+
+    // // confetti
+    // myConfetti({
+    //     particleCount: 200,
+    //     startVelocity: 40,
+    //     spread: 70,
+    //     origin: { y: 0.6 }
+    // });
+
+    // // show modal
+    // document.getElementById("winner-title").textContent = winner.title;
+    // document.getElementById("winner-modal").classList.remove("hidden");
+
+
     const shortlist = JSON.parse(sessionStorage.getItem("shortlist")) || [];
     const sliceAngle = (2 * Math.PI) / shortlist.length;
-
-    let normalized = (2 * Math.PI - (angle % (2 * Math.PI))) % (2 * Math.PI);
-    let index = Math.floor(normalized / sliceAngle);
-
+    
+    // Normalize angle to 0-2π range
+    let normalizedAngle = angle % (2 * Math.PI);
+    while (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
+    
+    // The wheel rotates clockwise, and pointer is at top (12 o'clock)
+    // In canvas coordinates, 0 radians is at 3 o'clock (right)
+    // Top is at -π/2 (or 3π/2 when normalized)
+    // We subtract the wheel's rotation from the pointer position
+    
+    // Calculate offset from start - pointer is at 3π/2 (270 degrees, top of circle)
+    const pointerPosition = 3 * Math.PI / 2;
+    
+    // Find which slice is under the pointer
+    // Subtract the rotation angle from pointer position
+    let angleAtPointer = (pointerPosition - normalizedAngle) % (2 * Math.PI);
+    while (angleAtPointer < 0) angleAtPointer += 2 * Math.PI;
+    
+    // Calculate the index
+    let index = Math.floor(angleAtPointer / sliceAngle) % shortlist.length;
+    
     const winner = shortlist[index];
-
+    
     highlightWinnerSlice(index, shortlist);
     triggerPulse();
-
-    // confetti
-    confetti({
+    
+    // Confetti
+    myConfetti({
         particleCount: 200,
         startVelocity: 40,
         spread: 70,
         origin: { y: 0.6 }
     });
-
-    // show modal
-    document.getElementById("winner-title").textContent = winner.title;
-    document.getElementById("winner-modal").classList.remove("hidden");
+    
+    // Show winner after a short delay
+    setTimeout(() => {
+        document.getElementById("winner-title").textContent = winner.title;
+        winnerModal.classList.remove("hidden");
+    }, 800);
 }
 
 spinBtn.addEventListener("click", () => {
