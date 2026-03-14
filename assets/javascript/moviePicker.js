@@ -288,6 +288,7 @@ async function openMovieInfoModal(movieId) {
   // Also offer the TMDb watch page link (if present in gb.link)
   if (gb.link) {
     const linkBlock = document.createElement('div');
+    linkBlock.className = 'movie-info-actions';
     linkBlock.style.marginTop = '10px';
     linkBlock.innerHTML = `<a class="movie-info-btn" href="${gb.link}" target="_blank" rel="noopener noreferrer">Open provider page on TMDb</a>`;
     providerContainer.appendChild(linkBlock);

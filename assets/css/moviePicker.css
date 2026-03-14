@@ -167,6 +167,7 @@ select, input[type="submit"] {
     cursor: pointer;
     letter-spacing: 2px;
     transition: background-color 70ms ease-in-out;
+    z-index: 1;
 }
 
 #feedback:hover {
@@ -309,7 +310,7 @@ input[type=text], input[type=email], textarea {
     /* align-items: center; */
 }
 .loadMoreContainer {
-    margin: 0 auto;
+    margin: 10px auto;
 }
 
 .form-group {
@@ -859,6 +860,45 @@ input[type=text], input[type=email], textarea {
 .movie-info-actions { display:flex; gap:12px; justify-content: flex-end; margin-top: 14px; }
 .movie-info-btn { padding: 10px 14px; border-radius: 10px; background: linear-gradient(90deg,#00b4db,#0083b0); color: #fff; text-decoration:none; border: none; cursor: pointer; font-weight:700; }
 .movie-info-btn.alt { background: transparent; color: #0b3a56; border: 1px solid rgba(11,58,86,0.08); }
+
+/* Footer */
+footer {
+    background: #263238;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 3rem 1rem 2rem;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+    color: #00BCD4;
+}
+
+.footer-bottom {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+}
+
 
 
 /* Animation for modal pop-in */
