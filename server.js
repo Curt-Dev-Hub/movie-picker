@@ -11,46 +11,63 @@ const port = process.env.PORT || 3000; // use any preferred port
 // Enable CORS for all routes (optional if front-end is served by same origin)
 app.use(cors());
 
+// app.get('/api/movies', async (req, res) => {
+//   const { genre, year, page, language } = req.query;
+
+//   const url = new URL('https://api.themoviedb.org/3/discover/movie');
+//   url.search = new URLSearchParams({
+//     include_adult: false,
+//     include_video: 'false',
+//     language: 'en-US',
+//     sort_by: 'popularity.desc',
+//     page: page || 1,
+//     ...(genre ? {with_genres: genre} : {}),
+//     ...(year ? {primary_release_year: year} : {}),
+//     ...(language ? {with_original_language: language} : {}),
+//   });
+
 
 // TMDb proxy route
-app.get('/api/movies', async (req, res) => {
-  const { genre, year, page, language } = req.query;
+  app.get("/api/movies", async (req, res) => {
+    const { genre, year, page, language, yearFrom, yearTo } = req.query;
 
-  const url = new URL('https://api.themoviedb.org/3/discover/movie');
-  url.search = new URLSearchParams({
-    include_adult: false,
-    include_video: 'false',
-    language: 'en-US',
-    sort_by: 'popularity.desc',
-    page: page || 1,
-    ...(genre ? {with_genres: genre} : {}),
-    ...(year ? {primary_release_year: year} : {}),
-    ...(language ? {with_original_language: language} : {}),
-  });
-
-
-  try {
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
-      },
+    const url = new URL("https://api.themoviedb.org/3/discover/movie");
+    url.search = new URLSearchParams({
+      include_adult: false,
+      include_video: "false",
+      language: "en-US",
+      sort_by: "popularity.desc",
+      page: page || 1,
+      ...(genre ? { with_genres: genre } : {}),
+      ...(language ? { with_original_language: language } : {}),
+      // Year logic — range takes priority over specific year
+      ...(yearFrom ? { "primary_release_date.gte": `${yearFrom}-01-01` } : {}),
+      ...(yearTo ? { "primary_release_date.lte": `${yearTo}-12-31` } : {}),
+      ...(!yearFrom && !yearTo && year ? { primary_release_year: year } : {}),
     });
 
-    const data = await response.json();
+    try {
+      const response = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
+        },
+      });
 
-    if(!response.ok) {
-      console.error('TMDb Error:', data);
-      return res.status(response.status).json(data);
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("TMDb Error:", data);
+        return res.status(response.status).json(data);
+      }
+
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching from TMDb:", error);
+      res.status(500).json({ error: "Failed to fetch movies from TMDb." });
     }
-
-    res.json(data);
-  } catch (error) {
-    console.error('Error fetching from TMDb:', error);
-    res.status(500).json({error: 'Failed to fetch movies from TMDb.'})
-  }
-});
+  });
 
 
 app.get('/api/genres', async (req, res) => {

@@ -420,6 +420,61 @@ async function populateLanguages() {
     });
 }
 
+function populateYearSelects() {
+    const currentYear = new Date().getFullYear();
+    const selects = ["selected-year", "year-from", "year-to"];
+
+    selects.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        for (let y = currentYear; y >= 1960; y--) {
+            const opt = document.createElement("option");
+            opt.value = y;
+            opt.textContent = y;
+            el.appendChild(opt);
+        }
+    });
+}
+
+// function to prevent yearTo being lower than yearFrom in year select
+function initYearRangeSync() {
+    const yearFrom = document.getElementById("year-from");
+    const yearTo = document.getElementById("year-to");
+
+    yearFrom.addEventListener("change", () => {
+    const selectedFrom = parseInt(yearFrom.value);
+
+    Array.from(yearTo.options).forEach((opt) => {
+        if (opt.value === "") return; // leave the placeholder alone
+        opt.disabled = parseInt(opt.value) < selectedFrom;
+    });
+
+    // If the current "To" selection is now invalid, reset it
+    if (parseInt(yearTo.value) < selectedFrom) {
+        yearTo.value = "";
+    }
+    });
+}
+
+function initYearToggle() {
+    const buttons = document.querySelectorAll(".year-mode-btn");
+    const specificBlock = document.getElementById("year-specific");
+    const rangeBlock = document.getElementById("year-range");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const mode = btn.dataset.mode;
+            specificBlock.classList.toggle("hidden", mode !== "specific");
+            rangeBlock.classList.toggle("hidden", mode !== "range");
+        });
+    });
+
+    initYearRangeSync();
+}
+
 async function populateGenres(selectElement) {
     const response = await fetch('/api/genres'); // your API route
     const data = await response.json();
@@ -456,17 +511,17 @@ async function createGenreSelect(index) {
 window.addEventListener('DOMContentLoaded', async () => {
 //  populateGenres();
     populateLanguages();
+    populateYearSelects();
+    initYearToggle();
     const firstSelect = await createGenreSelect(1);
     genreContainer.appendChild(firstSelect);
     document.querySelector("#genre1").addEventListener("change", syncGenreOptions);
-    // ** new change **
 
     // Render stored shortlist
     renderShortlist();
 
     // Restore selected movie cards (if they exist on screen)
     restoreSelectedCardStates();
-   
 });
 
 genreContainer.addEventListener("change", async (event) => {
@@ -515,18 +570,38 @@ document.querySelector("#user-movie-form").addEventListener("submit", validateFo
 async function validateForm(event) {
     event.preventDefault();
     state = true;
-
     showSpinner();
 
-    // const genre = document.getElementById("genre").value;
     const genreSelects = Array.from(document.querySelectorAll(".genre-select"));
     const genre  = genreSelects
         .map(s => s.value)
         .filter(Boolean)
         .join("|");
     const quantity = parseInt(document.getElementById("quantity").value);
-    const year = document.getElementById("selected-year").value;
+    // const year = document.getElementById("selected-year").value; **new
     const language = document.getElementById("language").value;
+
+    // --- Year mode detection ---
+    const activeMode = document.querySelector(".year-mode-btn.active")?.dataset.mode;
+    let year = "";
+    let yearFrom = "";
+    let yearTo = "";
+
+    if (activeMode === "specific") {
+        year = document.getElementById("selected-year").value;
+    } else if (activeMode === "range") {
+        yearFrom = document.getElementById("year-from").value;
+        yearTo = document.getElementById("year-to").value;
+
+        if (yearFrom && yearTo && parseInt(yearFrom) > parseInt(yearTo)) {
+            document.getElementById("year-range-error").classList.remove("hidden");
+            hideSpinner();
+            return;
+        }
+        document.getElementById("year-range-error").classList.add("hidden");
+    }
+    // "any" mode — all three stay empty, no year filter applied
+
 
     if (!genre || genre === "Select Genre" || isNaN(quantity)) {
         alert("Please select both a Genre and a Number of movies 🙂");
@@ -534,17 +609,17 @@ async function validateForm(event) {
         return;
     }
 
-    refreshMovies(); // check necessity
+    refreshMovies(); 
     enableLoadMoreButton();
 
     try {
-        const movies = await getRandomMovies(genre, year, quantity, language);
-        currentFilters = { genre, year, language, quantity }; // store for load-more
+        const movies = await getRandomMovies(genre, year, quantity, language, yearFrom, yearTo);
+        currentFilters = { genre, year, language, quantity, yearFrom, yearTo };
         currentPage = 1;
         maxPages = 500;
 
-        movies.forEach(movie => renderMovies(movie));
 
+        movies.forEach(movie => renderMovies(movie));
         formSubmit.value = "Get More Movies";
         document.querySelector(".random-movie-set").scrollIntoView({ behavior: "smooth" });
     } catch (error) {
@@ -672,7 +747,7 @@ function renderMovies(movie) {
 loadMoreBtns.forEach(btn => btn.addEventListener("click", loadMoreMovies));
 
 async function loadMoreMovies() {
-    console.log("loadMoreMovies Called")
+    // console.log("loadMoreMovies Called") *only needed for testing
     
     // below loads originally selected quantity of films only
     if (!currentFilters) return;
@@ -684,8 +759,10 @@ async function loadMoreMovies() {
         const movies = await getRandomMovies(
             currentFilters.genre,
             currentFilters.year,
-            currentFilters.quantity,    // ❤️ respect original quantity
-            currentFilters.language
+            currentFilters.quantity,    // respect original quantity
+            currentFilters.language,
+            currentFilters.yearFrom, // new 29/03
+            currentFilters.yearTo // new 29/03
         );
 
         hideLoadingSpinner();

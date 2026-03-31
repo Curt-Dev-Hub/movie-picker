@@ -61,7 +61,7 @@
         <div id="loading-spinner" class="spinner hidden"></div>
         <h1>RANDOM MOVIE PICKER</h1>
         <h2>Not Sure What To Watch? YOU are in the right place! 📽️</h2>
-    <!-- testing main wrapper -->
+    <!-- testing main wrapper (tested - working) -->
         <section class="user-choice-wrapper">
             <h3>Use The Form Below To Get Random Movie Ideas</h3>  <!-- should be an h3 *Google Lighthouse*-->
             <div class="form-wrapper">
@@ -140,8 +140,8 @@
                             <option value="">Select Language</option>
                         </select>
                     </div>
-                    
-                    <div class="form-group">
+                    <!-- previous -->
+                    <!-- <div class="form-group">
                         <label for="selected-year">Filter For A Specific Release Year - (Optional)</label>
                         <select name="selected-year" id="selected-year" required>
                             <option value="Select A Year" selected disabled>Select A Year</option>
@@ -211,6 +211,41 @@
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
                         </select>
+                    </div> -->
+                    <div class="form-group" id="year-filter-group">
+                        <label>Release Year Filter <span class="optional-label">(Optional)</span></label>
+                    
+                        <div class="year-mode-toggle">
+                            <button type="button" class="year-mode-btn active" data-mode="any">Any Year</button>
+                            <button type="button" class="year-mode-btn" data-mode="specific">Specific Year</button>
+                            <button type="button" class="year-mode-btn" data-mode="range">Year Range</button>
+                        </div>
+                    
+                        <!-- Specific Year -->
+                        <div id="year-specific" class="year-input-block hidden">
+                            <select id="selected-year" name="selected-year" title="Select a specific year">
+                                <option value="" selected>Select a year</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Year Range -->
+                        <div id="year-range" class="year-input-block hidden">
+                            <div class="year-range-inputs">
+                                <div>
+                                    <label for="year-from">From</label>
+                                    <select id="year-from" name="year-from">
+                                        <option value="" selected>Select year</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="year-to">To</label>
+                                    <select id="year-to" name="year-to">
+                                        <option value="" selected>Select year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <p class="year-range-error hidden" id="year-range-error">⚠ "From" year must be before "To" year.</p>
+                        </div>
                     </div>
                     <div class="form-submit">
                         <input id="form-submit" type="submit" value="Submit Choices">
@@ -289,7 +324,7 @@
     <div id="movie-info-modal" class="hidden">
         <div class="movie-info-backdrop" id="movie-info-backdrop">
             <div class="movie-info-card" role="dialog" aria-modal="true" aria-labelledby="movie-info-title">
-                <button id="movie-info-close" class="movie-info-close" aria-label="Close">✕</button>
+                <button type="button" id="movie-info-close" class="movie-info-close" aria-label="Close">✕</button>
 
                 <div class="movie-info-inner">
                     <div class="movie-info-header">
@@ -313,7 +348,7 @@
                     <div class="movie-info-actions">
                         <a id="movie-tmdb-link-cta" class="movie-info-btn" href="#" target="_blank"
                             rel="noopener noreferrer">Open on TMDb</a>
-                        <button id="movie-info-close-cta" class="movie-info-btn alt">Close</button>
+                        <button type="button" id="movie-info-close-cta" class="movie-info-btn alt">Close</button>
                     </div>
                 </div>
             </div>

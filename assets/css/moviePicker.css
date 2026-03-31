@@ -136,6 +136,60 @@ select, input[type="submit"] {
 .hidden {
   display: none;
 }
+
+/* new 29/03/26 Year mode toggle update */
+/* Year mode toggle */
+.year-mode-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.year-mode-btn {
+    padding: 6px 14px;
+    border: 2px solid #555;
+    border-radius: 20px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.year-mode-btn.active {
+    background: #185685; 
+    border-color: #185685;
+    color: #fff;
+}
+
+.year-range-inputs {
+    display: flex;
+    gap: 16px;
+}
+
+.year-range-inputs > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.year-range-error {
+    color: #e50914;
+    font-size: 0.82rem;
+    margin-top: 6px;
+}
+
+.optional-label {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    font-weight: normal;
+}
+
+.hidden {
+    display: none;
+}
+
 @keyframes spin {
   /* to { transform: rotate(360deg); } */
   to { transform: translate(-50%, -50%) rotate(360deg); }
