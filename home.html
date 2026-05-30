@@ -11,7 +11,9 @@
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/icon-files/movie_update_19880.png">
     <link rel="stylesheet" href="./css/home-style.css">
-</head>    
+    <link rel="stylesheet" href="./css/wheel-widget.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
 <body>
     <!-- Hero Section -->
     <section class="hero">
@@ -22,6 +24,7 @@
             <div class="cta-buttons">
                 <a href="#get-started" class="btn btn-primary" id="test-btn">Start Discovering</a>
                 <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
+                <button type="button" class="cw-trigger-btn" data-custom-wheel-trigger>🎡 Spin Your Own List</button>
             </div>
         </div>
     </section>
@@ -164,5 +167,6 @@
             });
         });
     </script>
+    <script type="module" src="./javascript/wheelWidget.js"></script>
 </body>
 </html>

@@ -940,7 +940,8 @@ function drawWheel() {
     });
 }
 
-function finishSpin(angle) {
+// function now redundant due to live logic now being inside spinBtn handler
+//function finishSpin(angle) {
     // const shortlist = JSON.parse(sessionStorage.getItem("shortlist")) || [];
     // const sliceAngle = (2 * Math.PI) / shortlist.length;
 
@@ -965,12 +966,12 @@ function finishSpin(angle) {
     // document.getElementById("winner-modal").classList.remove("hidden");
 
 
-    const shortlist = JSON.parse(sessionStorage.getItem("shortlist")) || [];
-    const sliceAngle = (2 * Math.PI) / shortlist.length;
+    // const shortlist = JSON.parse(sessionStorage.getItem("shortlist")) || [];
+    // const sliceAngle = (2 * Math.PI) / shortlist.length;
     
     // Normalize angle to 0-2π range
-    let normalizedAngle = angle % (2 * Math.PI);
-    while (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
+    // let normalizedAngle = angle % (2 * Math.PI);
+    // while (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
     
     // The wheel rotates clockwise, and pointer is at top (12 o'clock)
     // In canvas coordinates, 0 radians is at 3 o'clock (right)
@@ -978,35 +979,35 @@ function finishSpin(angle) {
     // We subtract the wheel's rotation from the pointer position
     
     // Calculate offset from start - pointer is at 3π/2 (270 degrees, top of circle)
-    const pointerPosition = 3 * Math.PI / 2;
+    // const pointerPosition = 3 * Math.PI / 2;
     
     // Find which slice is under the pointer
     // Subtract the rotation angle from pointer position
-    let angleAtPointer = (pointerPosition - normalizedAngle) % (2 * Math.PI);
-    while (angleAtPointer < 0) angleAtPointer += 2 * Math.PI;
+    // let angleAtPointer = (pointerPosition - normalizedAngle) % (2 * Math.PI);
+    // while (angleAtPointer < 0) angleAtPointer += 2 * Math.PI;
     
     // Calculate the index
-    let index = Math.floor(angleAtPointer / sliceAngle) % shortlist.length;
+//     let index = Math.floor(angleAtPointer / sliceAngle) % shortlist.length;
     
-    const winner = shortlist[index];
+//     const winner = shortlist[index];
     
-    highlightWinnerSlice(index, shortlist);
-    triggerPulse();
+//     highlightWinnerSlice(index, shortlist);
+//     triggerPulse();
     
-    // Confetti
-    myConfetti({
-        particleCount: 200,
-        startVelocity: 40,
-        spread: 70,
-        origin: { y: 0.6 }
-    });
+//     // Confetti
+//     myConfetti({
+//         particleCount: 200,
+//         startVelocity: 40,
+//         spread: 70,
+//         origin: { y: 0.6 }
+//     });
     
-    // Show winner after a short delay
-    setTimeout(() => {
-        document.getElementById("winner-title").textContent = winner.title;
-        winnerModal.classList.remove("hidden");
-    }, 800);
-}
+//     // Show winner after a short delay
+//     setTimeout(() => {
+//         document.getElementById("winner-title").textContent = winner.title;
+//         winnerModal.classList.remove("hidden");
+//     }, 800);
+// }
 
 spinBtn.addEventListener("click", () => {
     if (isSpinning) return;
@@ -1035,9 +1036,14 @@ spinBtn.addEventListener("click", () => {
             isSpinning = false;
             
 
-            // Convert final angle to a winning slice
-            let normalized = (2 * Math.PI - (angle % (2 * Math.PI))) % (2 * Math.PI);
-            let index = Math.floor(normalized / sliceAngle);
+            // Convert final angle to a winning slice.
+            // Slices are drawn from 0 rad (3 o'clock) clockwise, but the
+            // pointer sits at the top (12 o'clock) = 3π/2. The wheel has been
+            // rotated `angle` rad clockwise, so the slice under the pointer is:
+            const pointerAngle = 3 * Math.PI / 2;
+            let relative = (pointerAngle - angle) % (2 * Math.PI);
+            if (relative < 0) relative += 2 * Math.PI;
+            let index = Math.floor(relative / sliceAngle) % shortlist.length;
 
             const winner = shortlist[index];
             

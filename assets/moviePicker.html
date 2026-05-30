@@ -20,6 +20,7 @@
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/icon-files/movie_update_19880.png">
     <link rel="stylesheet" href="./css/moviePicker.css">
+    <link rel="stylesheet" href="./css/wheel-widget.css">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.min.js" integrity="sha512-sLPKCwYDz/KpwnqqJagXuuxusKOMDk3NifonwkLItJyc2vBKfqSd1pWtRfolbfJmf4hXYZ0sk0AlQyjB0PEXGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
@@ -61,6 +62,9 @@
         <div id="loading-spinner" class="spinner hidden"></div>
         <h1>RANDOM MOVIE PICKER</h1>
         <h2>Not Sure What To Watch? YOU are in the right place! 📽️</h2>
+        <div class="cw-trigger-row">
+            <button type="button" class="cw-trigger-btn" data-custom-wheel-trigger>🎡 Spin Your Own List</button>
+        </div>
     <!-- testing main wrapper (tested - working) -->
         <section class="user-choice-wrapper">
             <h3>Use The Form Below To Get Random Movie Ideas</h3>  <!-- should be an h3 *Google Lighthouse*-->
@@ -373,5 +377,6 @@
         </div>
     </footer>
     <script type="module" src="./javascript/moviePicker.js"></script>
+    <script type="module" src="./javascript/wheelWidget.js"></script>
 </body>
 </html>
